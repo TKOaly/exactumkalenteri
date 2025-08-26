@@ -1,0 +1,40 @@
+---
+import CalendarEvents from "../../cal";
+import Layout from "../../layouts/Layout.astro";
+
+export function getStaticPaths() {
+  return CalendarEvents.entries()
+    .map((x) => ({ params: { building: x[0] } }))
+    .toArray();
+}
+
+const { building } = Astro.params;
+---
+
+<Layout title={building}>
+  <div class="table-wrap">
+    <table>
+      <tr>
+        <th>Room</th>
+      </tr>
+      {
+        CalendarEvents.get(building)!
+          .keys()
+          .toArray()
+          .toSorted()
+          .map((x) => (
+            <>
+              <tr>
+                <td>
+                  <div>
+                    <a href={x}>{x}</a>
+                  </div>
+                </td>
+              </tr>
+            </>
+          ))
+      }
+    </table>
+    <ul></ul>
+  </div>
+</Layout>

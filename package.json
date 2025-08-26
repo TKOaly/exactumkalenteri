@@ -1,0 +1,19 @@
+{
+  "name": "exactumkalenteri",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@fontsource/open-sans": "^5.2.6",
+    "astro": "^5.13.3",
+    "ts-ics": "^2.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0"
+  }
+}
