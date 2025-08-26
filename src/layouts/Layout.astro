@@ -50,20 +50,27 @@ const { title } = Astro.props;
 		padding: 0.25em;
 		box-sizing: content-box;
 	}
+
+	td:first-child {
+		padding-left: 0.5em;
+		padding-right: 0.1em;
+	}
+	td:last-child {
+		padding-right: 0.5em;
+		padding-left: 0.1em;
+	}
 	table,
 	td {
 		border-collapse: collapse;
 		border-bottom: 1px solid #dbdbdb;
-		padding: 0.25em 0.5em;
+		padding: 0.1em;
 		background-color: white;
-	}
-	table {
-		margin: 2em 1em;
-		min-width: 30vw;
 	}
 	.table-wrap {
 		margin: auto;
 		width: fit-content;
+		padding: 2em 1em;
+		box-sizing: border-box;
 	}
 	tr {
 		width: 100%;
