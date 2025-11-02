@@ -16,9 +16,16 @@ jobs:
                 registry: ${{secrets.REGISTRY_URL}}
                 username: ${{secrets.REGISTRY_USERNAME}}
                 password: ${{secrets.REGISTRY_PASSWORD}}
+            - name: Docker meta
+              id: meta
+              uses: docker/metadata-action@v5
+              with:
+                images: ${{secrets.REGISTRY_URL}}/exactumkalenteri 
+                tags: |
+                  type=sha
             - name: Build and push
               uses: docker/build-push-action@v6
               with:
                 push: true
-                tags: ${{secrets.REGISTRY_URL}}/exactumkalenteri:latest
+                tags: ${{ steps.meta.outputs.tags }}
         
