@@ -108,13 +108,11 @@ export function Search() {
     filteredEvents = filteredEvents.filter(roomBuildingMatch)
   }
 
-
   const tooManyEvents = filteredEvents.length > 1000;
-  filteredEvents = filteredEvents.slice(0, 1000)
-    .toSorted(
-      (a, b) =>
-        a.event.start.date < b.event.start.date ? -1 : a.event.start.date > b.event.start.date ? 1 : 0
-    )
+  filteredEvents = filteredEvents.toSorted(
+    (a, b) =>
+      a.event.start.date < b.event.start.date ? -1 : a.event.start.date > b.event.start.date ? 1 : 0
+  ).slice(0, 1000)
 
   return <>
     <div className="search-wrap">
