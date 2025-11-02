@@ -90,7 +90,13 @@ input {
   border: solid black 1px;
 }
 
-.c4 {}
+.c4 {
+  display: flex;
+}
+
+.c4 span {
+  margin: auto;
+}
 
 
 .c1-top {
