@@ -1,31 +1,20 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import CalendarEvents from "../cal";
+import { Search } from "../components/search";
 ---
 
+<style>
+  .main-wrap {
+    margin: auto;
+    display: block;
+    background-color: white;
+    max-width: 60em;
+  }
+</style>
+
 <Layout>
-	<div class="table-wrap">
-		<table>
-			<tr>
-				<th>Building</th>
-			</tr>
-			{
-				CalendarEvents.keys()
-					.toArray()
-					.toSorted()
-					.map((x) => (
-						<>
-							<tr>
-								<td>
-									<div>
-										<a href={`${x}/`}>{x}</a>
-									</div>
-								</td>
-							</tr>
-						</>
-					))
-			}
-		</table>
-		<ul></ul>
-	</div>
+  <div class="main-wrap">
+    <Search client:only />
+  </div>
 </Layout>

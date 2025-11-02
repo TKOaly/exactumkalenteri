@@ -1,8 +1,6 @@
 import { convertIcsCalendar, type IcsCalendar, type IcsEvent } from "ts-ics";
 import { readFile } from "node:fs/promises"
 
-
-
 async function fetchCalendarRemote(url: string): Promise<IcsCalendar> {
 
   console.log(`Fetching events from remote ${url}, this may take a while...`)
@@ -30,29 +28,29 @@ if (import.meta.env.MODE === "production") {
   calendar = await fetchCalendarLocal("building13.ics")
 }
 
+export interface CalType {
+  location: {
+    building: string;
+    room: string;
+  };
+  event: IcsEvent;
+};
 
-function parseEvents(cal: IcsCalendar) {
+function parseEvents(calendar: IcsCalendar): CalType[] {
   if (!calendar.events) {
     throw new Error("no events in the ics");
   }
-  const buildings = new Map<string, Map<string, IcsEvent[]>>(); // Building -> Room
+  const events: { location: { building: string, room: string }, event: IcsEvent }[] = [];
   for (const event of calendar.events) {
     if (!event.location || !event.start || !event.end) {
       continue
     }
     const locationRegex = /(.*?),(.*?)($|,)/g;
     const locations = event.location.matchAll(locationRegex).map(x => ({ building: x[1].trim(), room: x[2].trim() })).toArray();
-    for (const location of locations) {
-      if (!buildings.has(location.building))
-        buildings.set(location.building, new Map())
-      const building = buildings.get(location.building)!;
-      if (!building.has(location.room))
-        building.set(location.room, [])
-      const room = building.get(location.room)!;
-      room.push(event)
-    }
+    if (locations.length === 1)
+      events.push({ location: locations[0], event: event });
   }
-  return buildings
+  return events
 }
 
 const ev = parseEvents(calendar);

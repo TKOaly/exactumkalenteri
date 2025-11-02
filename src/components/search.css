@@ -1,0 +1,48 @@
+table {
+  width: 100%;
+}
+
+input {
+  display: block;
+  margin: auto;
+  font-size: 1.4em;
+  max-width: 40em;
+  width: 100%;
+  height: 2em;
+}
+
+.search-wrap span {
+  padding-left: 1em;
+}
+
+.search-wrap {
+  margin: auto;
+  display: block;
+  margin-top: 1em;
+  padding: 1em;
+}
+
+.eventRow td {
+  border: 1px solid rgba(1, 1, 1, 0.2);
+  padding: 0 .25em;
+}
+
+.c1 {
+  white-space: nowrap;
+}
+
+.c2 {
+  white-space: nowrap;
+}
+
+.c3 {
+  white-space: nowrap;
+}
+
+.c4 {
+  white-space: nowrap;
+}
+
+.c5 {
+  width: auto;
+}
