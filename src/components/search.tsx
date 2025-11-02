@@ -20,23 +20,32 @@ const weekFirstDay = new Date(new Date(
 ).setHours(0));
 
 function renderRow(x: CalType) {
-  return <tr className="eventRow" key={x.event.uid}>
-    <td className="c1">
-      {weekdaysShort[x.event.start.date.getDay() - 1]}
-    </td>
-    <td className="c2">
-      {`${x.event.start.date.getDate()}.${x.event.start.date.getMonth() + 1}.${x.event.start.date.getFullYear()}`}
-    </td>
-    <td className="c3">
-      {dateTimeFormat(x.event.start.date)} -{" "}
-      {x.event.end && dateTimeFormat(x.event.end.date)}
-    </td>
-    <td className="c4">
-      {x.location.building} {" "}
-      {x.location.room}
-    </td>
-    <td className="c5">{x.event.summary}</td>
-  </tr>
+  return <div className="event-row" key={x.event.uid}>
+    <div className="c1">
+      <span>
+        {weekdaysShort[x.event.start.date.getDay() - 1]}
+        {" "}
+        {`${x.event.start.date.getDate()}.${x.event.start.date.getMonth() + 1}.${x.event.start.date.getFullYear()}`}
+      </span>
+    </div>
+    <div className="c2">
+      <span>
+        {dateTimeFormat(x.event.start.date)} -{" "}
+        {x.event.end && dateTimeFormat(x.event.end.date)}
+      </span>
+    </div>
+    <div className="c3">
+      <span>
+        {x.location.building} {" "}
+        {x.location.room}
+      </span>
+    </div>
+    <div className="c4">
+      <span>
+        {x.event.summary}
+      </span>
+    </div>
+  </div>
 }
 
 export function Search() {
@@ -119,28 +128,26 @@ export function Search() {
       <span>hakutuloksia: {tooManyEvents && "yli "}{filteredEvents.length}</span>
       <input ref={inputRef} placeholder="Haku (tapahtuman, huoneen, rakennuksen nimi)" type="search" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
     </div>
-    <table>
-      <tbody>
-        {weekdays.map((day, idx) => <>
-          <tr>
-            <th colSpan={5}>
-              {day}
-            </th>
-          </tr>
-          {(filteredEvents.filter(x =>
-            x.event.start.date >=
-            new Date(weekFirstDay.getTime() + DURATION_24H * idx) &&
-            x.event.start.date <
-            new Date(weekFirstDay.getTime() + DURATION_24H * (idx + 1))).length === 0
-          ) &&
-            <tr>
-              <td colSpan={5}>
-                <div>
-                  Ei tapahtumia.
-                </div>
-              </td>
-            </tr>
-          }
+    <div>
+      {weekdays.map((day, idx) => <>
+        <div className="day-row">
+          <span>
+            {day}
+          </span>
+        </div>
+        {(filteredEvents.filter(x =>
+          x.event.start.date >=
+          new Date(weekFirstDay.getTime() + DURATION_24H * idx) &&
+          x.event.start.date <
+          new Date(weekFirstDay.getTime() + DURATION_24H * (idx + 1))).length === 0
+        ) &&
+          <div className="info-row">
+            <span>
+              Ei tapahtumia.
+            </span>
+          </div >
+        }
+        <div className="rows-wrap">
           {filteredEvents.filter(x =>
             x.event.start.date >=
             new Date(weekFirstDay.getTime() + DURATION_24H * idx) &&
@@ -148,25 +155,23 @@ export function Search() {
             new Date(weekFirstDay.getTime() + DURATION_24H * (idx + 1))).map(x => (
               renderRow(x)
             ))}
-        </>)}
-        <tr>
-          <th colSpan={5}>
-            <div>
-              Myöhemmin
-            </div>
-          </th>
-        </tr>
+        </div>
+      </>)}
+      <div className="day-row">
+        <span>
+          Myöhemmin
+        </span>
+      </div>
+      <div className="rows-wrap">
         {filteredEvents.filter(x => x.event.start.date >= new Date(weekFirstDay.getTime() + DURATION_24H * 7)).map(renderRow)}
-        {tooManyEvents &&
-          <tr>
-            <td colSpan={5}>
-              <div>
-                Vain {filteredEvents.length} ensimmäistä tulosta näytettiin. Tarkenna hakua.
-              </div>
-            </td>
-          </tr>
-        }
-      </tbody>
-    </table >
+      </div>
+      {tooManyEvents &&
+        <div className="info-row">
+          <span>
+            Vain {filteredEvents.length} ensimmäistä tulosta näytettiin. Tarkenna hakua.
+          </span>
+        </div>
+      }
+    </div >
   </>
 }
