@@ -25,13 +25,14 @@ function renderRow(x: CalType) {
     <div className="c1">
       <span>
         {weekdaysShort[x.event.start.date.getDay() - 1]}
-        {" "}
+      </span>
+      <span className="date">
         {`${x.event.start.date.getDate()}.${x.event.start.date.getMonth() + 1}.${x.event.start.date.getFullYear()}`}
       </span>
     </div>
     <div className="c2">
       <span>
-        {dateTimeFormat(x.event.start.date)} -{" "}
+        {dateTimeFormat(x.event.start.date)} –{" "}
         {x.event.end && dateTimeFormat(x.event.end.date)}
       </span>
     </div>
