@@ -65,7 +65,11 @@ export function Search() {
     inputRef.current?.focus();
   }, []);
 
+  const todayRef = useRef(null);
+
+
   const [events, setEvents] = useState<CalType[]>([]);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     fetch("/events.json").then(r => r.json()).then((e: CalType[]) => e.map(e => {
       e.event.start.date = new Date(e.event.start.date);
@@ -74,7 +78,13 @@ export function Search() {
       return e;
     }).filter(x => x.event.start.date >= weekFirstDay))
       .then(setEvents)
+      .then(() => setLoading(false))
   }, [])
+
+  useEffect(() => {
+    if (todayRef.current)
+      todayRef.current.scrollIntoView({ behavior: "instant" });
+  }, [loading]);
 
   const searchIndex = useMemo(() => new Searcher(events, {
     keySelector: x => (x.event.description ?? "")
@@ -124,15 +134,24 @@ export function Search() {
       a.event.start.date < b.event.start.date ? -1 : a.event.start.date > b.event.start.date ? 1 : 0
   ).slice(0, 1000)
 
+  const search = <div className="search-wrap">
+    <span>hakutuloksia: {tooManyEvents && "yli "}{filteredEvents.length}</span>
+    <input ref={inputRef} placeholder="Haku (tapahtuman, huoneen, rakennuksen nimi)" type="search" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
+  </div>
+
+  if (loading)
+    return <>
+      {search}
+      <div>
+        <h2 className="loading">Ladataan tapahtumia...</h2>
+      </div>
+    </>;
   return <>
-    <div className="search-wrap">
-      <span>hakutuloksia: {tooManyEvents && "yli "}{filteredEvents.length}</span>
-      <input ref={inputRef} placeholder="Haku (tapahtuman, huoneen, rakennuksen nimi)" type="search" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
-    </div>
+    {search}
     <div>
       {weekdays.map((day, idx) => <>
         <div className={"day-row" + (today.getDay() - 1 === idx ? " today" : "")}>
-          <span>
+          <span ref={(today.getDay() - 1 === idx ? todayRef : null)}>
             {day}
           </span>
         </div>

@@ -42,6 +42,7 @@ input {
   display: block;
   width: fit-content;
   margin: auto;
+  scroll-margin-top: 10em;
 }
 
 .info-row {
@@ -118,6 +119,11 @@ input {
 
 .c1-bot {
   display: flex;
+}
+
+.loading {
+  margin: auto;
+  width: fit-content;
 }
 
 @media (width < 768px) {
