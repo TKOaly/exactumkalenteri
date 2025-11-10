@@ -16,6 +16,9 @@ input {
   display: block;
   margin-top: 1em;
   padding: 1em;
+  position: sticky;
+  top: 0;
+  background-color: white;
 }
 
 .day-row {
