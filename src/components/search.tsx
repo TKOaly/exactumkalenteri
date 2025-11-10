@@ -18,9 +18,10 @@ const DURATION_24H = 1000 * 3600 * 24;
 const weekFirstDay = new Date(new Date(
   (Date.now() - (new Date().getDay() - 1) * DURATION_24H)
 ).setHours(0));
+const today = new Date();
 
 function renderRow(x: CalType) {
-  return <div className="event-row" key={x.event.uid}>
+  return <div className={"event-row" + (x.event.end && x.event.end.date < today ? " past" : "")} key={x.event.uid}>
     <div className="c1">
       <span>
         {weekdaysShort[x.event.start.date.getDay() - 1]}
@@ -130,7 +131,7 @@ export function Search() {
     </div>
     <div>
       {weekdays.map((day, idx) => <>
-        <div className="day-row">
+        <div className={"day-row" + (today.getDay() - 1 === idx ? " today" : "")}>
           <span>
             {day}
           </span>

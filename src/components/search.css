@@ -25,6 +25,16 @@ input {
   display: block;
 }
 
+.day-row.today {
+  color: black;
+  font-size: 1.5em;
+}
+
+.event-row.past {
+  color: gray;
+}
+
+
 .day-row span {
   display: block;
   width: fit-content;
