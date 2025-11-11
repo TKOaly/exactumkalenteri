@@ -1,5 +1,5 @@
 import { Searcher } from "fast-fuzzy";
-import { useEffect, useState, useMemo, useRef } from "react"
+import { useEffect, useState, useMemo, useRef, type RefObject, type Ref } from "react"
 import { dateTimeFormat } from "../utils";
 import type { CalType } from "../cal";
 import "./search.css"
@@ -20,8 +20,8 @@ const weekFirstDay = new Date(new Date(
 ).setHours(0));
 const today = new Date();
 
-function renderRow(x: CalType) {
-  return <div className={"event-row" + (x.event.end && x.event.end.date < today ? " past" : "")} key={x.event.uid}>
+function renderRow(x: CalType, ref?: RefObject<null>) {
+  return <div className={"event-row" + (x.event.end && x.event.end.date < today ? " past" : "")} key={x.event.uid} ref={ref}>
     <div className="c1">
       <span>
         {weekdaysShort[x.event.start.date.getDay() - 1]}
@@ -66,7 +66,7 @@ export function Search() {
     inputRef.current?.focus();
   }, []);
 
-  const todayRef = useRef(null);
+  const nextEventRef = useRef(null);
 
 
   const [events, setEvents] = useState<CalType[]>([]);
@@ -83,8 +83,8 @@ export function Search() {
   }, [])
 
   useEffect(() => {
-    if (todayRef.current)
-      todayRef.current.scrollIntoView({ behavior: "instant" });
+    if (nextEventRef.current)
+      nextEventRef.current.scrollIntoView({ behavior: "instant" });
   }, [loading]);
 
   const searchIndex = useMemo(() => new Searcher(events, {
@@ -135,6 +135,8 @@ export function Search() {
       a.event.start.date < b.event.start.date ? -1 : a.event.start.date > b.event.start.date ? 1 : 0
   ).slice(0, 1000)
 
+  const nextEvent = filteredEvents[Math.max(filteredEvents.findLastIndex(x => (x.event.start.date < today && x.event.end && x.event.end.date < today)), 0)];
+
   const search = <div className="search-wrap">
     <span>hakutuloksia: {tooManyEvents && "yli "}{filteredEvents.length}</span>
     <input ref={inputRef} placeholder="Haku (tapahtuman, huoneen, rakennuksen nimi)" type="search" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
@@ -152,7 +154,7 @@ export function Search() {
     <div>
       {weekdays.map((day, idx) => <>
         <div className={"day-row" + (today.getDay() - 1 === idx ? " today" : "")}>
-          <span ref={(today.getDay() - 1 === idx ? todayRef : null)}>
+          <span>
             {day}
           </span>
         </div>
@@ -174,7 +176,7 @@ export function Search() {
             new Date(weekFirstDay.getTime() + DURATION_24H * idx) &&
             x.event.start.date <
             new Date(weekFirstDay.getTime() + DURATION_24H * (idx + 1))).map(x => (
-              renderRow(x)
+              renderRow(x, (x === nextEvent ? nextEventRef : undefined))
             ))}
         </div>
       </>)}
@@ -184,7 +186,7 @@ export function Search() {
         </span>
       </div>
       <div className="rows-wrap">
-        {filteredEvents.filter(x => x.event.start.date >= new Date(weekFirstDay.getTime() + DURATION_24H * 7)).map(renderRow)}
+        {filteredEvents.filter(x => x.event.start.date >= new Date(weekFirstDay.getTime() + DURATION_24H * 7)).map(x => renderRow(x, (x === nextEvent ? nextEventRef : undefined)))}
       </div>
       {tooManyEvents &&
         <div className="info-row">

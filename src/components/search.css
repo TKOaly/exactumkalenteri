@@ -42,7 +42,6 @@ input {
   display: block;
   width: fit-content;
   margin: auto;
-  scroll-margin-top: 10em;
 }
 
 .info-row {
@@ -62,6 +61,7 @@ input {
   padding: 0.25em;
   flex-direction: row;
   gap: .255em;
+  scroll-margin-top: 10em;
 }
 
 .event-row:first-child {
