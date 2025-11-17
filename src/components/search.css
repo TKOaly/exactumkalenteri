@@ -14,27 +14,26 @@ input {
 .search-wrap {
   margin: auto;
   display: block;
-  margin-top: 1em;
   padding: 1em;
   position: sticky;
   top: 0;
-  background-color: white;
+  background-color: var(--background-color);
 }
 
 .day-row {
   width: 100%;
   font-weight: bold;
-  border-top: 1px solid black;
+  border-top: 1px solid var(--border-color);
   display: block;
 }
 
 .day-row.today {
-  color: black;
+  color: var(--text-color-main);
   font-size: 1.5em;
 }
 
 .event-row.past {
-  color: gray;
+  color: var(--text-color-disabled);
 }
 
 
@@ -57,7 +56,7 @@ input {
 .event-row {
   display: flex;
   flex-wrap: wrap;
-  border-bottom: 1px solid rgba(1, 1, 1, 0.25);
+  border-bottom: 1px solid var(--border-color-2);
   padding: 0.25em;
   flex-direction: row;
   gap: .255em;
@@ -65,7 +64,7 @@ input {
 }
 
 .event-row:first-child {
-  border-top: 1px solid rgba(1, 1, 1, 0.25);
+  border-top: 1px solid var(--border-color-2);
 }
 
 .event-row:last-child {
@@ -82,7 +81,7 @@ input {
   width: 7.5em;
   white-space: nowrap;
   border-radius: .25em;
-  border: solid black 1px;
+  border: solid var(--border-color) 1px;
   padding: 0.10em 0.25em;
   display: flex;
   justify-content: space-between;
@@ -101,7 +100,7 @@ input {
   display: flex;
   border-radius: .25em;
   padding: 0.10em 0.25em;
-  border: solid black 1px;
+  border: solid var(--border-color) 1px;
   text-align: center;
   font-variant-numeric: tabular-nums;
   justify-content: space-around;
@@ -115,7 +114,7 @@ input {
   white-space: nowrap;
   border-radius: .25em;
   padding: 0.10em 0.25em;
-  border: solid black 1px;
+  border: solid var(--border-color) 1px;
   font-variant-numeric: tabular-nums;
 }
 
